@@ -1,0 +1,158 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+        - name: user-service
+          image: alparslanavci/services:0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  type: ClusterIP
+  selector:
+    app: user-service
+  ports:
+    - port: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+  labels:
+    app: product-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      containers:
+        - name: product-service
+          image: alparslanavci/services:0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+spec:
+  type: ClusterIP
+  selector:
+    app: product-service
+  ports:
+    - port: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-service
+  labels:
+    app: banking-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banking-service
+  template:
+    metadata:
+      labels:
+        app: banking-service
+    spec:
+      containers:
+        - name: banking-service
+          image: alparslanavci/services:0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: banking-service
+spec:
+  type: ClusterIP
+  selector:
+    app: banking-service
+  ports:
+    - port: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-service
+  labels:
+    app: ecommerce-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecommerce-service
+  template:
+    metadata:
+      labels:
+        app: ecommerce-service
+    spec:
+      containers:
+        - name: ecommerce-service
+          env:
+            - name: USER_SERVICE
+              value: user-service
+            - name: PRODUCT_SERVICE
+              value: product-service
+            - name: BANKING_SERVICE
+              value: banking-service
+          image: alparslanavci/ecommerce:0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: ecommerce-service
+  ports:
+    - port: 8081
+
+---

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: propeller-app
+spec:
+  serviceName: propeller-app
+  replicas: 3
+  selector:
+    matchLabels:
+      app: propeller-app
+  template:
+    metadata:
+      labels:
+        app: propeller-app
+    spec:
+      containers:
+        - name: propeller-app
+          image: alparslanavci/istio-client:2.0
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5701
+          env:
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: propeller-app
+spec:
+  type: ClusterIP
+  selector:
+    app: propeller-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
