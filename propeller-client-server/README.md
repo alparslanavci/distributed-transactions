@@ -1,6 +1,6 @@
-# Propeller - Hazelcast Client Server - Project X March 2021 
+# Propeller - Hazelcast Client Server - Distributed Transactions in a Service Mesh
 
-You need to have a k8 cluster running.
+You need to have a k8s cluster running.
 
 ## Install
 
@@ -10,16 +10,16 @@ You need to have a k8 cluster running.
 kubectl apply -f hazelcast-cluster.yaml
 ```
     
-2. Start the client
+2. Start the propeller app
    
 ```
-kubectl apply -f hazelcast-client.yaml
+kubectl apply -f propeller-app.yaml
 ```
    
-3. You can access the client using the SpringBoot service
+3. You can access the client using the propeller-app
    
 ```
-$ kubectl get svc springboot-service
+$ kubectl get svc propeller-app
 NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
-springboot-service   ClusterIP   10.4.9.105   <none>        80/TCP    18m
+propeller-app        ClusterIP   10.4.9.105   <none>        80/TCP    18m
 ```
